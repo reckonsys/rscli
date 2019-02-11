@@ -22,11 +22,12 @@
 project = 'RSCLI'
 copyright = '2019, dhilipsiva'
 author = 'dhilipsiva'
+__VERSION__ = '0.1.3'
 
-# The short X.Y version
-version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.1.1'
+release = __VERSION__
+# The short X.Y version
+version = '.'.join(__VERSION__.split('.')[:2])
 
 
 # -- General configuration ---------------------------------------------------
