@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+neovim = "*"
+bumpversion = "*"
+
+[packages]
+click = "*"
+rscli = {editable = true,path = "."}
+pick = "*"
+requests = "*"
+
+[requires]
+python_version = "3.7"
