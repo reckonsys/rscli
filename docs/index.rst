@@ -3,18 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to RSCLI's documentation!
+=====
+RSCLI
+=====
+
+Reckonsys CLI Toolchain
 =================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+A CLI toolchain to manage projects here at Reckonsys
 
 
+Installation
+============
 
-Indices and tables
-==================
+.. console::
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+    $ pip install rscli

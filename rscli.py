@@ -44,7 +44,10 @@ for framwork in FRAMEWORKS:
 
 @cli.command()
 @click.pass_context
-def init(ctx):
+@click.option('--name', prompt='Please enter a name for your project')
+@click.option('--description', prompt='Please describe your project')
+@click.option('--domain', prompt='Please enter a domain to host in')
+def init(ctx, name, description, domain):
     '''
     Init
     '''
