@@ -22,7 +22,7 @@
 project = 'RSCLI'
 copyright = '2019, dhilipsiva'
 author = 'dhilipsiva'
-__VERSION__ = '0.1.5'
+__VERSION__ = '0.2.0'
 
 # The full version, including alpha/beta/rc tags
 release = __VERSION__
