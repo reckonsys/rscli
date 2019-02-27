@@ -1,7 +1,7 @@
 from shutil import which
 
 import requests
-# from pick import pick
+from pick import pick
 from invoke import task
 
 DJANGO = 'django'
@@ -34,17 +34,11 @@ for framwork in FRAMEWORKS:
     init_map[framwork] = globals()["init_%s" % framwork]
 
 
-'''
-@cli.command()
-@click.pass_context
-@click.option('--name', prompt='Please enter a name for your project')
-@click.option('--description', prompt='Please describe your project')
-@click.option('--domain', prompt='Please enter a domain to host in')
-def init(ctx, name, description, domain):
+@task()
+def init(c):
     title = 'Please choose the framwork to init'
     framwork, _ = pick(FRAMEWORKS, title)
-    ctx.invoke(init_map[framwork])
-'''
+    init_map[framwork](c)
 
 
 def check_command(cmd):
