@@ -1,21 +1,12 @@
 from shutil import which
 
-import click
 import requests
-from pick import pick
+# from pick import pick
+from invoke import task
 
 DJANGO = 'django'
 ANGULAR = 'angular'
 FRAMEWORKS = [DJANGO, ANGULAR]
-
-
-@click.group()
-@click.pass_context
-def cli(ctx):
-    '''
-    Reckonsys CLI Toolchain
-    '''
-    ctx.ensure_object(dict)
 
 
 def ensure_gitignore(language):
@@ -27,13 +18,14 @@ def ensure_gitignore(language):
         f.write(resp.content.decode())
 
 
-@cli.command()
-def init_django():
+@task
+def init_django(c):
     ensure_gitignore('Python')
+    c.run('ls')
 
 
-@cli.command()
-def init_angular():
+@task
+def init_angular(c):
     ensure_gitignore('Node')
 
 
@@ -42,18 +34,17 @@ for framwork in FRAMEWORKS:
     init_map[framwork] = globals()["init_%s" % framwork]
 
 
+'''
 @cli.command()
 @click.pass_context
 @click.option('--name', prompt='Please enter a name for your project')
 @click.option('--description', prompt='Please describe your project')
 @click.option('--domain', prompt='Please enter a domain to host in')
 def init(ctx, name, description, domain):
-    '''
-    Init
-    '''
     title = 'Please choose the framwork to init'
     framwork, _ = pick(FRAMEWORKS, title)
     ctx.invoke(init_map[framwork])
+'''
 
 
 def check_command(cmd):
@@ -65,8 +56,7 @@ def check_command(cmd):
     return cmd_path
 
 
-@cli.command()
-@click.pass_context
-def doctor(ctx):
+@task
+def doctor(c):
     [check_command(command) for command in [
         'pipenv', 'django-admin', 'node', 'yarn']]

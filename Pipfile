@@ -10,10 +10,10 @@ twine = "*"
 sphinx = "*"
 
 [packages]
-click = "*"
 rscli = {editable = true,path = "."}
 pick = "*"
 requests = "*"
+invoke = "*"
 
 [requires]
 python_version = "3.7"

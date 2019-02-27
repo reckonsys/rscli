@@ -23,10 +23,9 @@ setup(
     keywords='rscli reckonsys cli toolchain',
     packages=find_packages(),
     install_requires=[
-        'Click', 'pick', 'requests'
+        'invoke', 'pick', 'requests'
     ],
-    entry_points='''
-        [console_scripts]
-        rscli=rscli:cli
-    ''',
+    entry_points={
+        'console_scripts': ['rscli = rscli.main:program.run']
+    }
 )
