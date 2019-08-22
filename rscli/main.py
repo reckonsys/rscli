@@ -6,7 +6,7 @@ from rscli import tasks
 __VERSION__ = '0.2.0'
 
 
-class TesterConfig(Config):
+class RSConfig(Config):
 
     prefix = 'rscli'
 
@@ -23,6 +23,6 @@ class TesterConfig(Config):
 
 program = Program(
     version=__VERSION__,
-    config_class=TesterConfig,
+    config_class=RSConfig,
     namespace=Collection.from_module(tasks)
 )
