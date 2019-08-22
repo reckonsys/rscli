@@ -11,10 +11,28 @@ Reckonsys CLI toolchain
 
 * Scaffolds out project
 * Adds `.gitginore`
-* Adds `.infra.json`
+* Adds `rscli.json`
 * Adds `guniconfig.py` (For python projects)
 * Adds `yarn build:<env>` (For node projects)
 
 ## Completion
 
-source <(inv --print-completion-script bash)
+### Bash
+
+Add the following line in your `.bashrc` or `.bash_profile`
+
+```
+source <(rscli --print-completion-script bash)
+```
+
+### zsh
+
+```
+source <(rscli --print-completion-script zsh)
+```
+
+### fish
+
+```
+source <(rscli --print-completion-script fish)
+```
