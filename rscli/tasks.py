@@ -2,11 +2,15 @@ from shutil import which
 
 import requests
 from pick import pick
-from invoke import task
+from invoke import task, Config
 
-DJANGO = 'django'
-ANGULAR = 'angular'
-FRAMEWORKS = [DJANGO, ANGULAR]
+PYTHON = 'Python'
+NODE = 'Node'
+LANGUAGES = [PYTHON, NODE]
+
+
+class TesterConfig(Config):
+    prefix = 'rscli'
 
 
 class Dict2Obj:
@@ -38,27 +42,12 @@ def ensure_gitignore(language):
         f.write(resp.content.decode())
 
 
-@task
-def init_django(c):
-    ensure_gitignore('Python')
-    c.run('ls')
-
-
-@task
-def init_angular(c):
-    ensure_gitignore('Node')
-
-
-init_map = {}
-for framwork in FRAMEWORKS:
-    init_map[framwork] = globals()["init_%s" % framwork]
-
-
 @task()
 def init(c):
     title = 'Please choose the framwork to init'
-    framwork, _ = pick(FRAMEWORKS, title)
-    init_map[framwork](c)
+    language, _ = pick(LANGUAGES, title)
+    ensure_gitignore(language)
+    c.run('ls')
 
 
 def check_command(cmd):
@@ -76,8 +65,7 @@ def doctor(c):
         'pipenv', 'django-admin', 'node', 'yarn']]
 
 
-_help = f'One of: {"/".join(RELEASES.keys)}'
-@task(help={'release': _help})
+@task(help={'release': f'One of: {"/".join(RELEASES.keys)}'})
 def bump(c, release=RELEASES.a):
     pass
 
