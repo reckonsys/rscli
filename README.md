@@ -11,7 +11,7 @@ Reckonsys CLI toolchain
 
 * Scaffolds out project
 * Adds `.gitginore`
-* Adds `rscli.json`
+* Adds `.version.json`
 * Adds `guniconfig.py` (For python projects)
 * Adds `yarn build:<env>` (For node projects)
 

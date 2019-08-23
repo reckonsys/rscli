@@ -1,10 +1,16 @@
-import requests
+import logging
 from shutil import which
 
-PYTHON = 'Python'
-NODE = 'Node'
+import requests
 
+NODE = 'Node'
+PYTHON = 'Python'
+
+abcfp = set('abcfp')
 LANGUAGES = [PYTHON, NODE]
+LOG_FORMAT = '%(asctime)s %(message)s'
+logging.basicConfig(format=LOG_FORMAT)
+logger = logging.getLogger('rscli')
 
 
 def ensure_gitignore(language):
@@ -24,6 +30,7 @@ def check_command(cmd):
     return cmd_path
 
 
+'''
 class Dict2Obj:
     """Convert a dict of object.
 
@@ -42,3 +49,4 @@ class Dict2Obj:
 RELEASES = Dict2Obj(
     a='alpha', b='beta', c='candidate-release', f='final', p='post'
 )
+'''
