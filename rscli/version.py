@@ -1,10 +1,9 @@
 '''Utilities to bump version'''
-from sys import exit
 from json import load
 from datetime import datetime
 from dataclasses import dataclass
 
-from rscli.utils import abcfp, logger
+from rscli.utils import abcfp
 
 
 @dataclass
@@ -20,8 +19,7 @@ class Version:
 
     def bump(self, release: str) -> str:
         if release not in abcfp:
-            logger.error(f'Not a valid release: {release}!')
-            exit(1)
+            raise ValueError(f'Not a valid release: {release}!')
         year = datetime.now().year
         if year != self.year:
             # Happy new year! Let's reset the build number!!
@@ -48,8 +46,7 @@ class Version:
                 self.release_number = 1
         elif release == 'f':
             if self.release in set('fp'):
-                logger.error(f'Not a valid release: {release}!')
-                exit(1)
+                raise ValueError('Cannot do a final release!!!')
             else:
                 self.release = release
                 self.release_number = 0
