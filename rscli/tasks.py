@@ -30,6 +30,15 @@ def is_git_dirty(c):
         raise Exit('git dir is NOT clean', 1)
 
 
+def _git_tag(c, old_version, new_version):
+    c.run('git add .')
+    bump_message = f'"Bump: {old_version} -> {new_version}"'
+    c.run(f'git commit -m {bump_message}')
+    c.run(f'git tag -a {new_version} -m {bump_message}')
+    c.run('git push origin')
+    c.run('git push origin --tags')
+
+
 @task(pre=[is_git_dirty], help={'release': f'Bump one of {abcfp}'})
 def bump(c, release='p', force_year_bump=True):
     f'''Bump versions: {abcfp}.'''
@@ -37,17 +46,14 @@ def bump(c, release='p', force_year_bump=True):
         raise Exit(f'Invalid release value: {release}', 1)
     old_version, new_version = bump_version(
         release, force_year_bump=force_year_bump)
-    c.run('git add .')
-    bump_message = f'"Bump: {old_version} -> {new_version}"'
-    c.run(f'git commit -m {bump_message}')
-    c.run(f'git tag -a {new_version} -m {bump_message}')
-    c.run('git push origin --tags')
+    _git_tag(c, old_version, new_version)
 
 
 @task(pre=[is_git_dirty])
 def bump_build(c, force_year_bump=True):
     '''Bump build number.'''
     old_version, new_version = bump_version(build=True)
+    _git_tag(c, old_version, new_version)
 
 
 @task
