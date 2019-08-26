@@ -1,10 +1,11 @@
 set -xeuo pipefail
 
-BUMP_VERSION=$1
-if [ "$BUMP_VERSION" = "" ]
-then
-    BUMP_VERSION="a"
-fi
+BUMP_VERSION="a"
+# BUMP_VERSION="$1"
+# if [ "$BUMP_VERSION" = "" ]
+# then
+#     BUMP_VERSION="a"
+# fi
 
 rscli bump -r $BUMP_VERSION
 
