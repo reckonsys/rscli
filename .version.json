@@ -3,7 +3,7 @@
         "year": 2019,
         "build": 1,
         "release": "a",
-        "release_number": 4
+        "release_number": 5
     },
     "files": [
         "setup.py"
