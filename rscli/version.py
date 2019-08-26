@@ -73,9 +73,12 @@ class Version:
         elif release == 'p':
             if self.release == 'p':
                 self.release_number += 1
-            else:
+            elif self.release == 'f':
                 self.release = release
                 self.release_number = 1
+            else:
+                raise ValueError(
+                    'Post releases can be made only on final / post release')
 
         return self.version_string
 
@@ -119,12 +122,12 @@ def bump_version(
         if current_version_str not in content:
             raise Exit(
                 f'Version `{current_version_str}` not found in {file}', 1)
-        content.replace(current_version_str, new_version_str)
+        content = content.replace(current_version_str, new_version_str)
         with open(file, 'w') as f:
             f.write(content)
         dump(
             {"version": asdict(current_version), "files": files},
-            open('.version.json', 'w'))
+            open('.version.json', 'w'), indent=4)
     # TODO: Find and replace version in files
     # Tag commit
     # Push tag

@@ -35,7 +35,8 @@ def bump(c, release='p', force_year_bump=True):
     f'''Bump versions: {abcfp}.'''
     if release not in abcfp:
         raise Exit(f'Invalid release value: {release}', 1)
-    old_version, new_version = bump_version(release, force_year_bump)
+    old_version, new_version = bump_version(
+        release, force_year_bump=force_year_bump)
 
 
 @task(pre=[is_git_dirty])
