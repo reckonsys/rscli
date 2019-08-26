@@ -1,7 +1,7 @@
 from sys import exit
 from pick import pick
 from invoke import task
-from rscli.version import compute_version
+from rscli.version import bump_version, bump_build as _bump_build
 from rscli.utils import (
     LANGUAGES, logger, ensure_gitignore, check_command, abcfp)
 
@@ -25,7 +25,16 @@ def bump(c, release='p'):
     if release not in abcfp:
         logger.error(f'Invalid release value: {release}')
         exit(1)
-    last_version, next_version = compute_version(release)
+    version = bump_version(release)
+    print(version)
+    __import__('ipdb').set_trace()
+
+
+@task
+def bump_build(c):
+    '''Bump build number'''
+    version = _bump_build()
+    print(version)
 
 
 @task
