@@ -26,8 +26,8 @@ def is_git_dirty(c):
     cmd = c.run('git status', hide='both')
     if cmd.stdout.strip().endswith('working tree clean'):
         logger.info('git dir is clean')
-    # else:
-    #     raise Exit('git dir is NOT clean', 1)
+    else:
+        raise Exit('git dir is NOT clean', 1)
 
 
 @task(pre=[is_git_dirty], help={'release': f'Bump one of {abcfp}'})
@@ -37,6 +37,11 @@ def bump(c, release='p', force_year_bump=True):
         raise Exit(f'Invalid release value: {release}', 1)
     old_version, new_version = bump_version(
         release, force_year_bump=force_year_bump)
+    c.run('git add .')
+    bump_message = f'"Bump: {old_version} -> {new_version}"'
+    c.run(f'git commit -m {bump_message}')
+    c.run(f'git tag -a {new_version} -m {bump_message}')
+    c.run('git push origin --tags')
 
 
 @task(pre=[is_git_dirty])
