@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__VERSION__ = '2019.1a5'
+__VERSION__ = '2019.2a1'
 
 setup(
     name='rscli',
