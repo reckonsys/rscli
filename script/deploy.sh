@@ -3,13 +3,10 @@ set -xeuo pipefail
 BUMP_VERSION=$1
 if [ "$BUMP_VERSION" = "" ]
 then
-    BUMP_VERSION="patch"
+    BUMP_VERSION="a"
 fi
 
-bumpversion $BUMP_VERSION
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-git push --tags
-git push origin "$CURRENT_BRANCH:$CURRENT_BRANCH"
+rscli bump -r $BUMP_VERSION
 
 rm -rf dist/
 python setup.py sdist
