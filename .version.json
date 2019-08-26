@@ -2,8 +2,8 @@
     "version": {
         "year": 2019,
         "build": 2,
-        "release": "a",
-        "release_number": 1
+        "release": "f",
+        "release_number": 0
     },
     "files": [
         "setup.py"
