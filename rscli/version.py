@@ -98,9 +98,9 @@ def _get_currnet_version():
     return Version.load(current_kwargs)
 
 
-def bump_version(release):
+def bump_version(release, force_year_bump: bool = True):
     current_version = _get_currnet_version()
-    current_version.bump(release)
+    current_version.bump(release, force_year_bump)
     return current_version
 
 
