@@ -1,7 +1,8 @@
 '''Utilities to bump version'''
-from json import load
+from json import load, dump
 from datetime import datetime
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
+from invoke.exceptions import Exit
 
 from rscli.utils import abcfp
 
@@ -16,6 +17,12 @@ class Version:
     @classmethod
     def load(cls, kwargs):
         return cls(**kwargs)
+
+    @classmethod
+    def dummy(cls):
+        '''Create a initial dummy version'''
+        return cls(
+            year=datetime.now().year, build=1, release='a', release_number=1)
 
     @property
     def version_string(self) -> str:
@@ -94,17 +101,31 @@ class Version:
 
 
 def _get_currnet_version():
-    current_kwargs = load(open('.version.json'))['version']
-    return Version.load(current_kwargs)
+    version_json = load(open('.version.json'))
+    current_kwargs = version_json['version']
+    return Version.load(current_kwargs), version_json['files']
 
 
-def bump_version(release, force_year_bump: bool = True):
-    current_version = _get_currnet_version()
-    current_version.bump(release, force_year_bump)
-    return current_version
-
-
-def bump_build():
-    current_version = _get_currnet_version()
-    current_version.bump_build()
-    return current_version
+def bump_version(
+        release=None, build: bool = False, force_year_bump: bool = True):
+    current_version, files = _get_currnet_version()
+    current_version_str = current_version.version_string
+    if build:
+        new_version_str = current_version.bump_build()
+    else:
+        new_version_str = current_version.bump(release, force_year_bump)
+    for file in files:
+        content = open(file).read()
+        if current_version_str not in content:
+            raise Exit(
+                f'Version `{current_version_str}` not found in {file}', 1)
+        content.replace(current_version_str, new_version_str)
+        with open(file, 'w') as f:
+            f.write(content)
+        dump(
+            {"version": asdict(current_version), "files": files},
+            open('.version.json', 'w'))
+    # TODO: Find and replace version in files
+    # Tag commit
+    # Push tag
+    return current_version_str, new_version_str

@@ -1,8 +1,7 @@
-from sys import exit
 from pick import pick
 from invoke import task
 from invoke.exceptions import Exit
-from rscli.version import bump_version, bump_build as _bump_build
+from rscli.version import bump_version
 from rscli.utils import (
     LANGUAGES, logger, ensure_gitignore, check_command, abcfp)
 
@@ -23,30 +22,26 @@ def doctor(c):
 
 @task
 def is_git_dirty(c):
-    '''Check if the working dir is clean of not'''
+    '''Check if the working dir is clean or not.'''
     cmd = c.run('git status', hide='both')
     if cmd.stdout.strip().endswith('working tree clean'):
-        print('git dir is clean')
-    else:
-        raise Exit('git dir is NOT clean', 1)
+        logger.info('git dir is clean')
+    # else:
+    #     raise Exit('git dir is NOT clean', 1)
 
 
 @task(pre=[is_git_dirty], help={'release': f'Bump one of {abcfp}'})
 def bump(c, release='p', force_year_bump=True):
-    f'''Bump versions: {abcfp}'''
+    f'''Bump versions: {abcfp}.'''
     if release not in abcfp:
-        logger.error(f'Invalid release value: {release}')
-        exit(1)
-    version = bump_version(release, force_year_bump)
-    print(version)
-    __import__('ipdb').set_trace()
+        raise Exit(f'Invalid release value: {release}', 1)
+    old_version, new_version = bump_version(release, force_year_bump)
 
 
 @task(pre=[is_git_dirty])
-def bump_build(c):
-    '''Bump build number'''
-    version = _bump_build()
-    print(version)
+def bump_build(c, force_year_bump=True):
+    '''Bump build number.'''
+    old_version, new_version = bump_version(build=True)
 
 
 @task

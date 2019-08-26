@@ -6,7 +6,7 @@ import requests
 NODE = 'Node'
 PYTHON = 'Python'
 
-abcfp = set('abcfp')
+abcfp = set('abcfp')  # Alpha, Beta, release Candidate, Final, Post
 LANGUAGES = [PYTHON, NODE]
 LOG_FORMAT = '%(asctime)s %(message)s'
 logging.basicConfig(format=LOG_FORMAT)
@@ -24,9 +24,9 @@ def ensure_gitignore(language):
 def check_command(cmd):
     cmd_path = which(cmd)
     if cmd_path is None:
-        print("[ERROR] Missing Command: %s" % cmd)
+        logger.error("[ERROR] Missing Command: %s" % cmd)
     else:
-        print("[INFO] Using command: %s" % cmd_path)
+        logger.info("[INFO] Using command: %s" % cmd_path)
     return cmd_path
 
 
@@ -41,7 +41,7 @@ class Dict2Obj:
         self.values = []
         for key, value in kwargs.items():
             self.keys.append(key)
-            self.values.append(key)
+            self.values.append(value)
             setattr(self, key, value)
         super(Dict2Obj, self).__init__()
 
